@@ -1,4 +1,4 @@
-import catalog from '../data/catalog.json' assert { type: 'json' };
+import catalog from '../data/catalog.json' with { type: 'json' };
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
 export default async function handler(req, res) {
