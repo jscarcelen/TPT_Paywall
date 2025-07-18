@@ -1,0 +1,18 @@
+body {
+  font-family: sans-serif;
+  padding: 1em;
+  background: #f4f4f4;
+}
+#catalog div {
+  background: white;
+  padding: 10px;
+  margin: 10px;
+  display: inline-block;
+  width: 180px;
+  border-radius: 5px;
+}
+#cart {
+  background: white;
+  padding: 1em;
+  margin-top: 2em;
+}
