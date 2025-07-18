@@ -1,16 +1,14 @@
 import { Resend } from 'resend';
-import catalog from '../data/catalog.json' with { type: 'json' };
+import fs from 'fs';
+import path from 'path';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 export default async function handler(req, res) {
-  if (req.method !== 'POST') return res.status(405).send('Método no permitido');
+  if (req.method !== 'POST') return res.status(405).end();
 
   const { email, itemIds } = req.body;
-
-  if (!email || !Array.isArray(itemIds)) {
-    return res.status(400).json({ error: 'Faltan datos' });
-  }
+  const catalog = JSON.parse(fs.readFileSync(path.join(process.cwd(), 'data', 'catalog.json'), 'utf8'));
 
   const links = itemIds
     .map(id => catalog.find(p => p.id === id)?.link_drive)
@@ -19,15 +17,15 @@ export default async function handler(req, res) {
 
   try {
     await resend.emails.send({
-      from: 'Tienda Educa <noreply@tu-dominio.com>',
+      from: 'Tienda Educa <noreply@resend.dev>',
       to: email,
       subject: 'Tus recursos educativos',
-      text: `¡Gracias por tu compra!\n\nAquí están los enlaces a tus recursos:\n\n${links}`
+      text: `Gracias por tu compra. Aquí están tus recursos:\n\n${links}`
     });
 
     res.status(200).json({ success: true });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
+  } catch (err) {
+    console.error("Error al enviar email:", err);
+    res.status(500).json({ error: err.message });
   }
 }
-
