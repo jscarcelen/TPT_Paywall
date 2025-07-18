@@ -1,14 +1,21 @@
 import Stripe from 'stripe';
-import fs from 'fs';
+import fs from 'fs/promises';
 import path from 'path';
+import { fileURLToPath } from 'url';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).end();
 
   const { email, itemIds } = req.body;
-  const catalog = JSON.parse(fs.readFileSync(path.join(process.cwd(), 'data', 'catalog.json'), 'utf8'));
+
+  // ✅ Leer catálogo
+  const catalogRaw = await fs.readFile(path.join(__dirname, '../data/catalog.json'), 'utf-8');
+  const catalog = JSON.parse(catalogRaw);
 
   const line_items = itemIds.map(id => {
     const p = catalog.find(prod => prod.id === id);
@@ -30,5 +37,5 @@ export default async function handler(req, res) {
     cancel_url: `${process.env.VERCEL_URL}/cart.html`,
   });
 
-  res.json({ url: session.url });
+  res.status(200).json({ url: session.url });
 }
