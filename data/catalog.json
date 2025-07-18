@@ -2,23 +2,23 @@
   {
     "id": "001",
     "nombre": "Vocabulario Básico",
-    "precio": 4.99,
+    "precio": 499,
     "tipo": "PDF",
-    "imagen": "producto2.png",
+    "imagen": "producto1.jpg",
     "idioma": "Español",
     "nivel": "Primaria",
     "palabras_clave": ["vocabulario", "niños"],
-    "link_drive": "https://drive.google.com/drive/folders/abc123"
+    "link_drive": "https://drive.google.com/folder1"
   },
   {
     "id": "002",
     "nombre": "Gramática Avanzada",
-    "precio": 6.50,
+    "precio": 650,
     "tipo": "PDF",
-    "imagen": "producto2.png",
+    "imagen": "producto2.jpg",
     "idioma": "Inglés",
     "nivel": "Secundaria",
-    "palabras_clave": ["gramática", "adjetivos"],
-    "link_drive": "https://drive.google.com/drive/folders/def456"
+    "palabras_clave": ["gramática", "verbos"],
+    "link_drive": "https://drive.google.com/folder2"
   }
 ]
