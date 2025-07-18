@@ -1,0 +1,40 @@
+<body>
+  <h1>Tu carrito</h1>
+  <div id="cart-items"></div>
+  <p>Total: <span id="total">0 €</span></p>
+  <input id="email" type="email" placeholder="Tu correo" required>
+  <button id="checkout">Pagar</button>
+
+  <script>
+    const cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+    fetch("/data/catalog.json")
+      .then(r => r.json())
+      .then(products => {
+        const selected = products.filter(p => cart.includes(p.id));
+        const container = document.getElementById("cart-items");
+        const total = selected.reduce((sum, p) => sum + p.price, 0);
+        document.getElementById("total").textContent = total.toFixed(2) + " €";
+
+        selected.forEach(p => {
+          const div = document.createElement("div");
+          div.innerHTML = `<p>${p.name} - ${p.price.toFixed(2)} €</p>`;
+          container.appendChild(div);
+        });
+
+        document.getElementById("checkout").onclick = async () => {
+          const email = document.getElementById("email").value;
+          if (!email) return alert("Introduce tu correo");
+
+          const res = await fetch("/api/create-checkout-session", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email, itemIds: cart })
+          });
+
+          const { url } = await res.json();
+          window.location.href = url;
+        };
+      });
+  </script>
+</body>
