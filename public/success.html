@@ -1,19 +1,19 @@
-<!DOCTYPE html>
-<html>
-<head><title>Gracias</title></head>
 <body>
-  <h1>¡Gracias por tu compra!</h1>
-  <p>Revisando tu correo...</p>
+  <h1>Gracias por tu compra</h1>
+  <p>Te hemos enviado un email con los recursos.</p>
+
   <script>
-    const email = new URLSearchParams(location.search).get("email");
-    const itemIds = new URLSearchParams(location.search).get("items").split(",");
+    const params = new URLSearchParams(window.location.search);
+    const email = params.get("email");
+    const items = params.get("items")?.split(",") || [];
+
     fetch("/api/send-email", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, itemIds })
+      body: JSON.stringify({ email, itemIds: items })
+    }).then(() => {
+      localStorage.removeItem("cart");
     });
-    localStorage.removeItem("carrito");
   </script>
 </body>
-</html>
 
