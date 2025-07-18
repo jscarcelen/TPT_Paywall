@@ -4,13 +4,11 @@ import catalog from '../data/catalog.json' assert { type: 'json' };
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 export default async function handler(req, res) {
-  if (req.method !== 'POST') {
-    return res.status(405).send('Método no permitido');
-  }
+  if (req.method !== 'POST') return res.status(405).send('Método no permitido');
 
   const { email, itemIds } = req.body;
 
-  if (!email || !itemIds || !Array.isArray(itemIds)) {
+  if (!email || !Array.isArray(itemIds)) {
     return res.status(400).json({ error: 'Faltan datos' });
   }
 
@@ -32,3 +30,4 @@ export default async function handler(req, res) {
     res.status(500).json({ error: error.message });
   }
 }
+
