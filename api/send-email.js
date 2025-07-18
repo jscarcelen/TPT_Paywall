@@ -1,5 +1,5 @@
 import { Resend } from 'resend';
-import catalog from '../data/catalog.json' assert { type: 'json' };
+import catalog from '../data/catalog.json' with { type: 'json' };
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
