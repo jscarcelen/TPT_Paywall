@@ -1,4 +1,4 @@
-import catalog from '../data/catalog.json' assert { type: 'json' };
+import catalog from '../data/catalog.json' with { type: 'json' };
 
 export default function handler(req, res) {
   const safeCatalog = catalog.map(({ link_drive, ...rest }) => rest);
